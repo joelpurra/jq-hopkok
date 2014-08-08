@@ -18,7 +18,15 @@ git clone --recursive git://github.com/joelpurra/jq-hopkok.git
 
 ## Usage
 
-See each source file, but don't expect much documentation yet.
+Also see each source file, but don't expect much documentation yet.
+
+```shell
+# URL to components
+echo '"https://server.example.com/deep/path/file.ext?with-a-parameter=true#and-a-fragment"' | ./to-components.sh
+
+# Join components to a URL
+echo '"https://server.example.com/deep/path/file.ext?with-a-parameter=true#and-a-fragment"' | ./to-components.sh | ./from-components.sh
+```
 
 
 
