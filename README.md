@@ -1,4 +1,4 @@
-# [jq-hopkok](http://joelpurra.github.com/jq-hopkok) [jq](https://stedolan.github.io/jq/) library
+# [jq-hopkok](https://github.com/joelpurra/jq-hopkok) [jq](https://stedolan.github.io/jq/) library
 
 A bunch of jq snippets to manipulate json files, collected from other projects, for example [har-dulcify](https://github.com/joelpurra/har-dulcify), [har-heedless](https://github.com/joelpurra/har-heedless) and [ep-erroneous-votes](https://github.com/joelpurra/ep-erroneous-votes).
 
