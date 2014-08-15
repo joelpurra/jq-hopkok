@@ -116,10 +116,10 @@ def getScheme:
 		}
 	end;
 
-def isIgnoredScheme:
+def isWhitelistedScheme:
 	. as $scheme
-	| ["data", "about"] as $ignoredSchemes
-	| $ignoredSchemes
+	| ["http", "https", "ftp"] as $whitelistedSchemes
+	| $whitelistedSchemes
 	| map(. == $scheme)
 	| any;
 
@@ -342,7 +342,7 @@ def splitUrlToComponents:
 		}
 	else
 		($value | getScheme) as $scheme
-		| if ($scheme.valid | not) or ($scheme.value | isIgnoredScheme) then
+		| if ($scheme.valid | not) or ($scheme.value | isWhitelistedScheme | not) then
 			{
 				value: $value,
 				scheme: $scheme
