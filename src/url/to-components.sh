@@ -69,26 +69,42 @@ def deleteNullKeys:
 	);
 
 def checkUrlValidity:
-	index(":") as $firstColon
-	| index("/") as $firstSlash
-	| index("?") as $firstQuestionMark
-	| index("#") as $firstHash
-	| (
-		($firstColon < $firstSlash)
-		and
-		((($firstSlash | type) == "null") or (($firstQuestionMark | type) == "null") or ($firstSlash < $firstQuestionMark))
-		and
-		((($firstQuestionMark | type) == "null") or (($firstHash | type) == "null") or ($firstQuestionMark < $firstHash))
+	type == "string"
+	and
+	# Very basic length check.
+	length > 0
+	and
+	(
+		index(":") as $firstColon
+		| index("/") as $firstSlash
+		| index("?") as $firstQuestionMark
+		| index("#") as $firstHash
+		| (
+			($firstColon < $firstSlash)
+			and
+			((($firstSlash | type) == "null") or (($firstQuestionMark | type) == "null") or ($firstSlash < $firstQuestionMark))
+			and
+			((($firstQuestionMark | type) == "null") or (($firstHash | type) == "null") or ($firstQuestionMark < $firstHash))
+		)
 	);
 
 def splitDomainToComponentsArray:
-	split(".") as $domainComponents
-	# Negative range to build the domain from components from the right.
-	| [ range((($domainComponents | length) * -1); 0) ]
-	| map(
-		# Assemble the domain, longest domain combination first.
-		$domainComponents[.:] | join(".")
-	);
+	[] as $fallback
+	| if type == "string" then
+		split(".") as $domainComponents
+		| if length > 0 then
+			# Negative range to build the domain from components from the right.
+			[ range((($domainComponents | length) * -1); 0) ]
+			| map(
+				# Assemble the domain, longest domain combination first.
+				$domainComponents[.:] | join(".")
+			)
+		else
+			$fallback
+		end
+	else
+		$fallback
+	end;
 
 def splitDomainToComponents:
 	. as $domain
@@ -101,19 +117,24 @@ def splitDomainToComponents:
 	};
 
 def getScheme:
-	split(":")
-	| if length >= 2 then
-		{
-			value: .[0],
-			rest: (.[1:] | join(":")),
-			valid: true
-		}
+	{
+		value: null,
+		rest: null,
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		split(":")
+		| if length >= 2 then
+			{
+				value: .[0],
+				rest: (.[1:] | join(":")),
+				valid: true
+			}
+		else
+			$fallback
+		end
 	else
-		{
-			value: null,
-			rest: null,
-			valid: false
-		}
+		$fallback
 	end;
 
 def isWhitelistedScheme:
@@ -124,59 +145,87 @@ def isWhitelistedScheme:
 	| any;
 
 def removeLeadingSlashSlash:
-	if startswith("//") then
-		.[2:]
+	"" as $fallback
+	| if type == "string" then
+		if startswith("//") then
+			.[2:]
+		else
+			.
+		end
 	else
-		.
+		$fallback
 	end;
 
 def getAuthority:
-	split("?")
-	| .[0]
-	| split("#")
-	| .[0]
-	| removeLeadingSlashSlash
-	| split("/")
-	| {
-		value: .[0],
-		valid: true
-	};
-
-def getPort:
-	split(":")
-	| if length == 1 then
-		{
-			value: null,
-			separator: false,
+	{
+			value: "",
+			valid: false
+	} as $fallback
+	| if type == "string" then
+		split("?")
+		| .[0]
+		| split("#")
+		| .[0]
+		| removeLeadingSlashSlash
+		| split("/")
+		| {
+			value: .[0],
 			valid: true
 		}
-	elif length == 2 then
-		.[1]
-		| if isNumeric then
-			{
-				value: (. | tonumber),
-				separator: true,
-				valid: true
-			}
-		else
+	else
+		$fallback
+	end;
+
+def getPort:
+	{
+		value: null,
+		separator: false,
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		split(":")
+		| if length == 1 then
 			{
 				value: null,
-				separator: true,
-				valid: false
+				separator: false,
+				valid: true
 			}
+		elif length == 2 then
+			.[1]
+			| if isNumeric then
+				{
+					value: (. | tonumber),
+					separator: true,
+					valid: true
+				}
+			else
+				{
+					value: null,
+					separator: true,
+					valid: false
+				}
+			end
+		else
+			$fallback
 		end
 	else
-		{
-			value: null,
-			separator: false,
-			valid: false
-		}
+		$fallback
 	end;
 
 def getDomain:
-	split(":")
-	| .[0]
-	| splitDomainToComponents;
+	{
+		value: .,
+		components: [],
+		tld: null,
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		split(":")
+		| .[0]
+		| splitDomainToComponents
+	else
+		$fallback
+	end;
 
 def getAfterAuthority:
 	removeLeadingSlashSlash
@@ -196,121 +245,159 @@ def getAfterAuthority:
 	| .[$firstAfter:$length];
 
 def getPathComponents:
-	 split("/")
-	 | (
-	 	if length > 0 then
-	 		.[1:]
-	 	else
-	 		[]
- 		end
-	);
+	[] as $fallback
+	| if type == "string" then
+		split("/")
+		| (
+			if length > 0 then
+				.[1:]
+			else
+				$fallback
+			end
+		)
+	else
+		$fallback
+	end;
 
 def getPath:
-	split("?")
-	| (.[0] // "")
-	| split("#")
-	| (.[0] // "")
-	| {
+	{
 		value: .,
-		components: getPathComponents,
-		valid: true
-	};
-
-def getQuerystringComponent:
-	split("=")
-	| if length == 1 then
-		{
-			key: .[0],
-			value: null,
-			separator: false,
+		components: [],
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		split("?")
+		| (.[0] // "")
+		| split("#")
+		| (.[0] // "")
+		| {
+			value: .,
+			components: getPathComponents,
 			valid: true
 		}
-	elif length == 2 then
-		if (.[0] | length) > 0 then
+	else
+		$fallback
+	end;
+
+def getQuerystringComponent:
+	{
+		key: null,
+		value: null,
+		separator: false,
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		split("=")
+		| if length == 1 then
 			{
 				key: .[0],
-				value: .[1],
-				separator: true,
+				value: null,
+				separator: false,
 				valid: true
 			}
+		elif length == 2 then
+			if (.[0] | length) > 0 then
+				{
+					key: .[0],
+					value: .[1],
+					separator: true,
+					valid: true
+				}
+			else
+				{
+					key: null,
+					value: .[1],
+					separator: true,
+					valid: false
+				}
+			end
 		else
-			{
-				key: null,
-				value: .[1],
-				separator: true,
-				valid: false
-			}
+			$fallback
 		end
 	else
-		{
-			key: null,
-			value: null,
-			separator: false,
-			valid: false
-		}
+		$fallback
 	end;
 
 def getQuerystringComponents:
-	split("&")
-	| map(getQuerystringComponent);
+	[] as $fallback
+	| if type == "string" then
+		split("&")
+		| map(getQuerystringComponent)
+	else
+		$fallback
+	end;
 
 def getQuery:
-	. as $original
-	| split("?")
-	| if length <= 1 then
-		{
-			value: null,
-			separator: ($original == "?"),
-			valid: true
-		}
-	elif length == 2 then
-		.[1]
-		| split("#")
-		| .[0]
-		| if length == 0 then
+	{
+		value: null,
+		separator: false,
+		components: [],
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		. as $original
+		| split("?")
+		| if length <= 1 then
 			{
 				value: null,
-				separator: true,
+				separator: ($original == "?"),
 				components: [],
 				valid: true
 			}
+		elif length >= 2 then
+			.[1:]
+			# The RFC allows question marks in the query string.
+			| join("?")
+			| split("#")
+			| .[0]
+			| if length == 0 then
+				{
+					value: null,
+					separator: true,
+					components: [],
+					valid: true
+				}
+			else
+				{
+					value: .,
+					separator: true,
+					components: getQuerystringComponents,
+					valid: true
+				}
+			end
 		else
-			{
-				value: .,
-				separator: true,
-				components: getQuerystringComponents,
-				valid: true
-			}
+			$fallback
 		end
 	else
-		{
-			value: null,
-			separator: false,
-			valid: false
-		}
+		$fallback
 	end;
 
 def getFragment:
-	. as $original
-	| split("#")
-	| if length <= 1 then
-		{
-			value: null,
-			separator: ($original == "#"),
-			valid: true
-		}
-	elif length == 2 then
-		{
-			value: .[1],
-			separator: true,
-			valid: true
-		}
+	{
+		value: null,
+		separator: false,
+		valid: false
+	} as $fallback
+	| if type == "string" then
+		. as $original
+		| split("#")
+		| if length <= 1 then
+			{
+				value: null,
+				separator: ($original == "#"),
+				valid: true
+			}
+		elif length == 2 then
+			{
+				value: .[1],
+				separator: true,
+				valid: true
+			}
+		else
+			$fallback
+		end
 	else
-		{
-			value: null,
-			separator: false,
-			valid: false
-		}
+		$fallback
 	end;
 
 def isValidComponent:
