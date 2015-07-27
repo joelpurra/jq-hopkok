@@ -2,6 +2,8 @@
 set -e
 set -u
 
+# Read JSON objects from stdin and sort their keys.
+
 # TODO: see if sortObjectKeysRecursively can be replaced by jq command line flag --sort-keys when a newer version of jq is released?
 # http://stedolan.github.io/jq/manual/#Invokingjq
 # https://github.com/stedolan/jq/issues/169

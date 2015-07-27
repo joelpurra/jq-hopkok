@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
+# Convert an array of objects to TSV format.
+# https://en.wikipedia.org/wiki/Tab-separated_values
+#
+# The object keys are used as column headers.
+#
+# Input:
+#	An array of JSON objects (from stdin) which have the same, flat structure of keys/values.
+# Output:
+#	Text formatted as TSV.
+
+
 read -d '' getTSV <<-'EOF' || true
 def replace(a; b):
 	split(a)

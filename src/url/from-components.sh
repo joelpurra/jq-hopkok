@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+# Assemble a URL string from an object with the URL components.
+
 read -d '' fromComponents <<-'EOF' || true
 def joinUrlComponents:
 	(

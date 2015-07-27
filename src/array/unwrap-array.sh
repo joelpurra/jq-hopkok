@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 set -e
+set -u
 
-jq '.[]'
+# Extract values from an array, with a line break between each value.
+
+jq --unbuffered '.[]'

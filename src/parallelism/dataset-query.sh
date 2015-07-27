@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# Execute parallel commands per folder, collecting the output on stdout.
+# Execute commands per folder (in parallel), collecting the output on stdout.
 #
 # USAGE
 # 	"$0" <folder(s)> -- <command(s)>

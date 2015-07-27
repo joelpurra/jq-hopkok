@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+# Split up a URL string to an object with the URL components.
+
 read -d '' toComponents <<-'EOF' || true
 def arrayToLookup:
 	map(@text)
