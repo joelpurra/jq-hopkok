@@ -41,14 +41,14 @@ src
 │   ├── README.md
 │   ├── as-object.sh
 │   ├── merge.sh
+│   ├── reduce-merge-deep-add.sh
 │   └── sort-object-keys-deep.sh
 ├── parallelism
 │   ├── README.md
 │   ├── dataset-foreach.sh
 │   ├── dataset-query.sh
 │   ├── parallel-chunks.sh
-│   ├── parallel-n-2.sh
-│   └── reduce-merge-deep-add.sh
+│   └── parallel-n-2.sh
 ├── tabular
 │   ├── README.md
 │   ├── array-of-objects-to-csv.sh
