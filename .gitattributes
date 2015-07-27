@@ -1,0 +1,11 @@
+* text=auto
+
+*.jq text
+*.json text
+*.md text
+*.sh text
+
+./LICENSE* text
+
+.gitattributes text
+.gitignore text
