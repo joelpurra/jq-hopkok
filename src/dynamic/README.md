@@ -10,7 +10,7 @@ A bunch of `jq` snippets and shell scripts to manipulate JSON files. See also [`
 
 # Dynamic JSON utils
 
-Generic utils. In this case "dynamic" means values, as specified by the [JSON standard](http://json.org/). Perhaps the folder should be renamed.
+Generic utils. In this case "dynamic" means values, as specified by the [JSON standard](https://json.org/). Perhaps the folder should be renamed.
 
 
 
@@ -25,7 +25,7 @@ Generic utils. In this case "dynamic" means values, as specified by the [JSON st
 ---
 
 ## License
-Copyright (c) 2014, 2015, Joel Purra <http://joelpurra.com/>
+Copyright (c) 2014, 2015, Joel Purra <https://joelpurra.com/>
 All rights reserved.
 
 When using [jq-hopkok](https://github.com/joelpurra/jq-hopkok), comply to at least one of the three available licenses: BSD, MIT, GPL.

@@ -25,7 +25,7 @@ Manipulate JSON arrays.
 ---
 
 ## License
-Copyright (c) 2014, 2015, Joel Purra <http://joelpurra.com/>
+Copyright (c) 2014, 2015, Joel Purra <https://joelpurra.com/>
 All rights reserved.
 
 When using [jq-hopkok](https://github.com/joelpurra/jq-hopkok), comply to at least one of the three available licenses: BSD, MIT, GPL.

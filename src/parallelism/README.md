@@ -77,7 +77,7 @@ mv "output.tmp.1.json" "output.json"
 
 I use this, in a somewhat more complicated way (cleaning up temp-files, cross-platform counts etcetera) when I prepare (map) and collect aggregate (reduce) numbers from different web pages in [`aggregate/all.sh`](https://github.com/joelpurra/har-dulcify/blob/master/src/aggregate/all.sh). Will try to generalize it later, so you can run something like `repeated-reductions.sh` with any `jq --slurp 'reduce ...'`.
 
-I also use [pipe viewer `pv`](http://www.ivarch.com/programs/pv.shtml) to monitor speed sometimes, but since the output size (usually, otherwise use [`--size`](http://www.ivarch.com/programs/quickref/pv.shtml)) is unknown, it's only a crude indicator on that end.
+I also use [pipe viewer `pv`](https://www.ivarch.com/programs/pv.shtml) to monitor speed sometimes, but since the output size (usually, otherwise use [`--size`](https://www.ivarch.com/programs/quickref/pv.shtml)) is unknown, it's only a crude indicator on that end.
 
 ```bash
 pv -cN 'input' "input.json" | parallel-chunks.sh jq 'some transformation' | pv -cN "output" >"output.json"
@@ -90,7 +90,7 @@ In my case, I have about 100k separate objects in a single file, about six gigab
 ---
 
 ## License
-Copyright (c) 2014, 2015, Joel Purra <http://joelpurra.com/>
+Copyright (c) 2014, 2015, Joel Purra <https://joelpurra.com/>
 All rights reserved.
 
 When using [jq-hopkok](https://github.com/joelpurra/jq-hopkok), comply to at least one of the three available licenses: BSD, MIT, GPL.

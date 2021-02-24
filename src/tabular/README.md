@@ -27,7 +27,7 @@ Useful tools to convert from JSON to [comma-separated values (CSV)](https://en.w
 *Originally written as a comment in [jq issue #48 "tsv and/or csv output support"](https://github.com/stedolan/jq/issues/48#issuecomment-55744660), and targets `jq` v1.4.*
 
 For reference: RFC4180, Common Format and MIME Type for Comma-Separated Values (CSV) Files
-http://www.ietf.org/rfc/rfc4180.txt
+https://www.ietf.org/rfc/rfc4180.txt
 
 I use two scripts I pipe JSON into, and get CSV/TSV output. Object keys are used to generate a header.
 https://github.com/joelpurra/jq-hopkok/blob/master/src/tabular/array-of-objects-to-csv.sh
@@ -78,7 +78,7 @@ Hope these scripts can help someone.
 ---
 
 ## License
-Copyright (c) 2014, 2015, Joel Purra <http://joelpurra.com/>
+Copyright (c) 2014, 2015, Joel Purra <https://joelpurra.com/>
 All rights reserved.
 
 When using [jq-hopkok](https://github.com/joelpurra/jq-hopkok), comply to at least one of the three available licenses: BSD, MIT, GPL.

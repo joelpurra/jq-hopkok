@@ -1,18 +1,18 @@
 jq-hopkok jq library. A bunch of jq snippets to manipulate json files, collected from other projects.
-Copyright (c) 2014, Joel Purra <http://joelpurra.com/>
+Copyright (c) 2014, Joel Purra <https://joelpurra.com/>
 All rights reserved.
 
 When using jq-hopkok, comply to at least one of the three available licenses: BSD, MIT, GPL.
 Please see the respective LICENSE file for details, or the links below for more information.
 
 The BSD 2-Clause License
-http://opensource.org/licenses/BSD-2-Clause
-http://en.wikipedia.org/wiki/BSD_license
+https://opensource.org/licenses/BSD-2-Clause
+https://en.wikipedia.org/wiki/BSD_license
 
 The MIT License
-http://opensource.org/licenses/MIT
-http://en.wikipedia.org/wiki/MIT_License
+https://opensource.org/licenses/MIT
+https://en.wikipedia.org/wiki/MIT_License
 
 GNU General Public License, version 3 (GPL-3.0)
-http://opensource.org/licenses/gpl-3.0.html
-http://en.wikipedia.org/wiki/GNU_General_Public_License
+https://opensource.org/licenses/gpl-3.0.html
+https://en.wikipedia.org/wiki/GNU_General_Public_License
