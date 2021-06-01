@@ -8,6 +8,16 @@ A bunch of `jq` snippets and shell scripts to manipulate JSON files. See also [`
 
 
 
+> ## ⚠️ This project has been archived
+>
+> No future updates are planned. Feel free to continue using it, but expect no support.
+
+
+
+---
+
+
+
 ## Get it
 
 Just clone the repository.
